@@ -1,0 +1,25 @@
+#Simple Moldable Script for creating a WatchDog
+
+$watchdog = "Target"
+$process = Get-Process | Where-Object { $_.ProcessName -eq $watchdog }
+while ($true)
+{
+	while (!($process))
+	{
+    #Add actions here (when stopped)
+  
+    #This rechecks if the process is started.
+		$process = Get-Process | Where-Object { $_.ProcessName -eq $watchdog }
+		start-sleep -s 5
+	}
+	if ($process)
+	{
+		#Add actions here (when started)
+    
+		$process.WaitForExit()
+		start-sleep -s 2
+		$process = Get-Process | Where-Object { $_.ProcessName -eq $watchdog }
+		#Add actions here (when exited)
+    
+	}
+}
